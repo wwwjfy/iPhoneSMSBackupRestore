@@ -151,20 +151,20 @@ if __name__ == '__main__':
 
         if send:
             date_read = 0
-            date_delivered = date
+            date_delivered = 0
             is_delivered = 0
             is_from_me = 1
             is_read = 0
             is_sent = 1
             has_dd_results = 0
         else:
-            date_read = date
+            date_read = 0
             date_delivered = 0
             is_delivered = 1
             is_from_me = 0
             is_read = 1
             is_sent = 0
-            has_dd_results = 1
+            has_dd_results = 0
         cursor.execute("INSERT INTO message ("
                          "guid, text, replace, handle_id, attributedBody, "
                          "version, service, account, account_guid, date, "
@@ -174,7 +174,7 @@ if __name__ == '__main__':
                        "VALUES ('%s', ?, 0, '%s', ?, 10, 'SMS', '%s', "
                                "'%s', %s, %s, %s, %s, 1, %s, %s, %s, %s, 1)" %
                        (str(uuid.uuid4()).upper(), handle_id,
-                        account_login, account_id, date, date_read,
+                        account_login.lower(), account_id, date, date_read,
                         date_delivered, is_delivered, is_from_me, is_read,
                         is_sent, has_dd_results),
                        (text, get_attributedBody(text)))
