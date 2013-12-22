@@ -1,5 +1,6 @@
 #! -*- encoding: utf-8 -*-
 
+import copy
 import csv
 import hashlib
 import os
@@ -79,6 +80,29 @@ def update_mbdb(filepath, sha1, size):
             value, offset = get_string(content, offset)
 
 
+
+def update_old_message(cursor, old_ids, next_date):
+    """Update old messages' ids whose date is before next_date to the latest
+    one.
+
+    If next_date is None, update all the old_ids.
+    """
+    tmp_ids = copy.copy(old_ids)
+    cursor.execute("SELECT seq FROM sqlite_sequence WHERE name = 'message'")
+    last_rowid = cursor.fetchone()[0]
+    for old_id, date in tmp_ids:
+        if date > next_date and next_date is not None:
+            break
+        last_rowid += 1
+        cursor.execute("UPDATE message SET ROWID = %s WHERE ROWID = %s" %
+                       (last_rowid, old_id))
+        cursor.execute("UPDATE chat_message_join SET message_id = %s "
+                        "WHERE message_id = %s" % (last_rowid, old_id))
+        old_ids.pop(0)
+    cursor.execute("UPDATE sqlite_sequence SET seq = %s "
+                    "WHERE name = 'message'" % last_rowid)
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         print('File not found')
@@ -101,10 +125,15 @@ if __name__ == '__main__':
         print('No available number found, have one message sent at least')
         sys.exit(1)
     account_id, account_login = result
+
+    cursor.execute("SELECT ROWID, date FROM message")
+    old_ids = cursor.fetchall()
+
     for row in reader:
         number, send, date, text = row
         send = False if send == '1' else True
         date = int(date) - apple_absolute_time_since
+        update_old_message(cursor, old_ids, date)
         text = text.decode('utf-8')
         country = 'cn'
         for prefix, country_ in number_country.items():
@@ -181,6 +210,9 @@ if __name__ == '__main__':
         message_id = cursor.lastrowid
         cursor.execute("INSERT INTO chat_message_join VALUES (%s, %s)" %
                        (chat_id, message_id))
+        conn.commit()
+    if old_ids:
+        update_old_message(cursor, old_ids, None)
         conn.commit()
     f.close()
     conn.close()
