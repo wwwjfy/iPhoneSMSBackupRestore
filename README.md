@@ -1,8 +1,24 @@
+Tested on iPhone 5S with iOS 7.0.4.
+
 Initially, it's the tool to transfer sms in other devices backed up in csv format,
 to iPhone. It's the restore process.
 
 ## TODO ##
 By adding the backup process, I can now manipulate every detail of the message.
+
+## Usage ##
+
+```
+python restore.py <sms database> <sms csv> Manifest.mbdb
+```
+
+- The filename of sms database is 3d0d7e5fb2ce288813306e4d4636395e047a3d28
+- Sms database and Manifest.mbdb are in a folder in `~/Library/Application Support/MobileSync/Backup`
+- Columns of sms csv (direction: 1 for inbound, 2 for outbound):
+
+```
+number,direction,unix timestamp,text
+```
 
 ## Reference ##
 
