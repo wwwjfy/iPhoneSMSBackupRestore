@@ -80,7 +80,6 @@ def update_mbdb(filepath, sha1, size):
             value, offset = get_string(content, offset)
 
 
-
 def update_old_message(cursor, old_ids, next_date):
     """Update old messages' ids whose date is before next_date to the latest
     one.
@@ -126,7 +125,7 @@ if __name__ == '__main__':
         sys.exit(1)
     account_id, account_login = result
 
-    cursor.execute("SELECT ROWID, date FROM message")
+    cursor.execute("SELECT ROWID, date FROM message ORDER BY ROWID")
     old_ids = cursor.fetchall()
 
     for row in reader:
