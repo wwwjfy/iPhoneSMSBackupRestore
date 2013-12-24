@@ -1,5 +1,7 @@
 Tested on iPhone 5S with iOS 7.0.4.
 
+Back up, run the script on the backup, and restore the phone.
+
 Initially, it's the tool to transfer sms in other devices backed up in csv format,
 to iPhone. It's the restore process.
 
@@ -26,6 +28,9 @@ It now doesn't process country code prefix, like +86 in China. Numbers with or
 without the prefix are different.
 
 Also, it doesn't contain any country code than China yet.
+
+For field `attributedBody`, nothing other than `__kIMMessagePartAttributeName` is added (the value is 0 for this as observed),
+so the links will only show as plain text.
 
 ## Reference ##
 
