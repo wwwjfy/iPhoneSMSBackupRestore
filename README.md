@@ -20,6 +20,13 @@ python restore.py <sms database> <sms csv> Manifest.mbdb
 number,direction,unix timestamp,text
 ```
 
+## Caveats ##
+
+It now doesn't process country code prefix, like +86 in China. Numbers with or
+without the prefix are different.
+
+Also, it doesn't contain any country code than China yet.
+
 ## Reference ##
 
 - [An Overview of the Messages (OS X) Database Structure](http://joshgrochowski.com/overview-of-messages-database-structure/)
