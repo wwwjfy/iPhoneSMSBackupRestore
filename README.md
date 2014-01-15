@@ -6,7 +6,13 @@ Initially, it's the tool to transfer sms in other devices backed up in csv forma
 to iPhone. It's the restore process.
 
 ## TODO ##
-By adding the backup process, I can now manipulate every detail of the message.
+Add the backup process to manipulate every detail of the message.
+
+## Prerequisite ##
+
+```
+pip install pyobjc
+```
 
 ## Usage ##
 
